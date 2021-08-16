@@ -1,0 +1,5 @@
+{
+  "PORT": "5002",
+  "jwtSecret":  "temror",
+  "mongoUri": "mongodb+srv://artem:1710069871Aa@cluster0.p8yiz.mongodb.net/myApp?retryWrites=true&w=majority"
+}
