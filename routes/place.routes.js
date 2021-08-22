@@ -1,7 +1,8 @@
 const {Router} = require('express')
 const UserPlace = require('../models/UserPlace')
 const auth = require('../middleware/auth.middleware')
-const WholePlaces = require('../models/Place')
+const Place = require('../models/Place')
+const User = require('../models/User')
 const router = Router()
 
 router.post(
@@ -9,21 +10,23 @@ router.post(
     auth,
     async (req, res) => {
         try {
-            const places = await WholePlaces.find()
+            const places = await Place.find()
+            const filterPlaces = await Place.find({owners: {$exists: false}})
+            places.forEach(e => {
+                let counter = 0
+                e.owners.forEach(f => {
+                    if (f.id.toString() === req.body.id.toString()) {
+                        counter++
+                    }
+                })
+                if(counter===0){
+                    filterPlaces.push(e)
+                }
+            })
+            console.log(filterPlaces)
+            const place = filterPlaces[Math.floor(Math.random() * places.length)]
 
-            const place = places[Math.floor(Math.random() * places.length)]
-            const check = async () =>{
-                const ownerPlaces = await UserPlace.find({owner: req.body.id})
-                const candidate = await UserPlace.findOne({name: place.name,owner: req.body.id})
-                if(ownerPlaces.length === places.length){
-                    res.status(400).json({message:'Места закончились'})
-                }
-                if(!!candidate){
-                    await check()
-                }
-                res.json(place)
-            }
-            await check()
+            res.json(place)
         } catch (e) {
             //ошибка
             res.status(500).json({message: 'Что-то пошло не так'})
@@ -32,30 +35,52 @@ router.post(
 router.post(
     '/visit',
     auth,
-    async (req,res)=>{
-        try{
-            const body = req.body
-
-            const visitedPlace = new UserPlace({
-                name: body.place.name,
-                description: body.place.description,
-                visited: body.visit,
-                owner: req.user.userId
-            })
-            await visitedPlace.save()
+    async (req, res) => {
+        try {
+            const {placeId, userId, visit} = req.body
+            const visitedPlace = await Place.updateOne({_id:placeId},{$push: {owners:{id:userId,visited:visit}}})
+            console.log(visitedPlace)
             res.status(201).json({visitedPlace})
-        }catch (e){
+        } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так'})
         }
     })
-router.get('/visited',auth, async (req,res)=>{
-    try{
-        const visitedPlaces = await UserPlace.find({owner: req.user.userId})
-        res.status(201).json({visitedPlaces})
-    }catch (e) {
-        res.status(500).json({message: 'Что-то пошло не так'})
+router.post(
+    '/create',
+    auth,
+    async (req, res) => {
+        try {
+            const place = new Place({
+                name: "Красная площадь",
+                description: "Описание для красной площади.",
+                location: {
+                    metro: "Охотный ряд",
+                    yandex: "yandex.ru"
+                }
+            })
+            await place.save()
+            res.status(201).json({place})
+        } catch (e) {
+            res.status(500).json({message: 'Что-то пошло не так'})
+        }
+    })
+router.get('/visited', auth, async (req, res) => {
+        try {
+            console.log('on server')
+            const places = await Place.find()
+            const visitedPlaces = []
+            places.forEach(p=>{
+                p.owners.forEach(o=>{
+                    if(o.visited===true){
+                        visitedPlaces.push(p)
+                    }
+                })
+            })
+            console.log(visitedPlaces)
+            res.status(201).json({visitedPlaces})
+        } catch (e) {
+            res.status(500).json({message: 'Что-то пошло не так'})
+        }
     }
-    }
-
 )
 module.exports = router

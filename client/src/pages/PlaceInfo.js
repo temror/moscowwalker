@@ -11,7 +11,7 @@ export const PlaceInfo = () => {
 
     const visit = async visit =>{
         try {
-            const data = await request(`../api/places/visit`, 'POST', {place: auth.selectedPlace,visit},
+            const data = await request(`../api/places/visit`, 'POST', {placeId: auth.selectedPlace._id,userId: auth.userId,visit},
                 {
                     Authorization: `Bearer ${auth.token}`
                 }

@@ -11,6 +11,7 @@ export const Visited = ({visited}) => {
 
     const getPlaces = useCallback(async () => {
         try {
+            console.log('in try block ')
             const place = await request('api/places/visited', 'GET', null, {
                 Authorization: `Bearer ${token}`
             })
@@ -19,15 +20,17 @@ export const Visited = ({visited}) => {
         } catch (e) {
         }
     }, [token, request])
+    const href = window.location.href
     useEffect(() => {
         getPlaces()
-    }, [getPlaces])
+        console.log(visited)
+    }, [href])
     return (
         <div>
             {visited
                 ? <h1>Я здесь был</h1>
                 : <h1>Я здесь не был</h1>}
-            <VisitList places={places} visited={visited}/>
+            <VisitList places={places}/>
         </div>
     )
 }
