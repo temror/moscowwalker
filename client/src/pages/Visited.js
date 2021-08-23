@@ -2,10 +2,12 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
 import {VisitList} from "../components/VisitList";
+import {Preloader} from "../components/Preloader";
 
 export const Visited = ({visited}) => {
     const [places, setPlaces] = useState([])
-    const {request} = useHttp()
+    const [visit,setVisit] = useState()
+    const {request,loading} = useHttp()
     const {token,userId} = useContext(AuthContext)
 
     const getPlaces = useCallback(async visited => {
@@ -15,6 +17,7 @@ export const Visited = ({visited}) => {
             })
             console.log(place)
             setPlaces(place.visitedPlaces)
+            setVisit(visited)
         } catch (e) {
         }
     }, [token, request])
@@ -22,11 +25,14 @@ export const Visited = ({visited}) => {
     useEffect(() => {
         getPlaces(visited)
     }, [href])
+    if(loading){
+        return <Preloader/>
+    }
     return (
         <div>
-            {visited
+            {visit
                 ? <h1>Я здесь был</h1>
-                : <h1>Я здесь не был</h1>}
+                : <h1>Хочу побывать</h1>}
             <VisitList places={places}/>
         </div>
     )

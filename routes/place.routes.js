@@ -12,7 +12,6 @@ router.post(
         try {
             const places = await Place.find()
             const filterPlaces = await Place.find({owners: {$exists: false}})
-            console.log(filterPlaces)
               places.forEach(e => {
                  let counter = 0
                  e.owners.forEach(f => {
@@ -24,9 +23,11 @@ router.post(
                      filterPlaces.push(e)
                  }
              })
-            const place = filterPlaces[Math.floor(Math.random() * places.length)]
-            //const place = places[Math.floor(Math.random() * places.length)]
-
+            console.log(filterPlaces)
+            if(filterPlaces===[]){
+                res.json(filterPlaces)
+            }
+            const place = filterPlaces[Math.floor(Math.random() * filterPlaces.length)]
             res.json(place)
         } catch (e) {
             //ошибка
@@ -82,6 +83,16 @@ router.get('/visited/:visited/:userId', auth, async (req, res) => {
                 })
             })
             res.status(201).json({visitedPlaces})
+        } catch (e) {
+            res.status(500).json({message: 'Что-то пошло не так'})
+        }
+    }
+)
+router.get('/selected/:id', auth, async (req, res) => {
+        try {
+            const selected = await Place.findOne({_id: req.params.id})
+            console.log(selected)
+            res.json(selected)
         } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так'})
         }

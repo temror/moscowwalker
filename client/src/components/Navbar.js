@@ -8,6 +8,7 @@ export const Navbar = () =>{
     const logoutHandler = event =>{
         event.preventDefault()
         auth.logout()
+        auth.finish = false
         history.push('/')
     }
     return(

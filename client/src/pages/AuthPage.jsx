@@ -3,11 +3,12 @@ import {AuthContext} from "../context/AuthContext";
 import {useMessage} from "../hooks/message_hook";
 import {useHttp} from "../hooks/http.hook";
 import "materialize-css"
+import {Preloader} from "../components/Preloader";
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext)
     const message = useMessage()
-    const {request, error, clearError} = useHttp()
+    const {request, error, clearError,loading} = useHttp()
     const [form,setForm] = useState({
         email: "",
         password: ""
@@ -47,6 +48,9 @@ export const AuthPage = () => {
         }catch (e) {
 
         }
+    }
+    if(loading){
+        return <Preloader/>
     }
     return (
         <div>

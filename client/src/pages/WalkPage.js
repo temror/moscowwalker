@@ -1,12 +1,13 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom"
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
+import {Preloader} from "../components/Preloader";
 
 export const WalkPage = () =>{
     const auth = useContext(AuthContext)
     const history = useHistory()
-    const {request} = useHttp()
+    const {request,loading} = useHttp()
 
     const walkHandler = async () =>{
         try{
@@ -17,6 +18,9 @@ export const WalkPage = () =>{
             history.push(`/places/${data._id}`)
         }
         catch (e){}
+    }
+    if(loading){
+        return <Preloader/>
     }
     return(
         <div>
