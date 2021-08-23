@@ -10,7 +10,8 @@ export const WalkPage = () =>{
 
     const walkHandler = async () =>{
         try{
-            const data = await request('api/places','POST', {id: auth.userId},{
+            //{id: auth.userId} - req
+            const data = await request('api/places','POST', null,{
                 Authorization: `Bearer ${auth.token}`
             })
             auth.selectedPlace = data
