@@ -2,17 +2,16 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {useHttp} from "../hooks/http.hook";
 import {AuthContext} from "../context/AuthContext";
 import {VisitList} from "../components/VisitList";
-import {NotVisitList} from "../components/NotVisitList";
 
 export const Visited = ({visited}) => {
     const [places, setPlaces] = useState([])
     const {request} = useHttp()
     const {token} = useContext(AuthContext)
 
-    const getPlaces = useCallback(async () => {
+    const getPlaces = useCallback(async visited => {
         try {
-            console.log('in try block ')
-            const place = await request('api/places/visited', 'GET', null, {
+            console.log(visited)
+            const place = await request(`api/places/visited/${visited}`, 'GET', null, {
                 Authorization: `Bearer ${token}`
             })
             console.log(place)
@@ -22,8 +21,7 @@ export const Visited = ({visited}) => {
     }, [token, request])
     const href = window.location.href
     useEffect(() => {
-        getPlaces()
-        console.log(visited)
+        getPlaces(visited)
     }, [href])
     return (
         <div>

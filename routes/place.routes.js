@@ -63,18 +63,22 @@ router.post(
             res.status(500).json({message: 'Что-то пошло не так'})
         }
     })
-router.get('/visited', auth, async (req, res) => {
+router.get('/visited/:visited', auth, async (req, res) => {
         try {
-            console.log('on server')
+            let visit = true
+            if(req.params.visited!=="true"){
+                visit = false
+            }
             const places = await Place.find()
             const visitedPlaces = []
             places.forEach(p=>{
                 p.owners.forEach(o=>{
-                    if(o.visited===true){
+                    if(o.visited===visit){
                         visitedPlaces.push(p)
                     }
                 })
             })
+            console.log(visitedPlaces)
             res.status(201).json({visitedPlaces})
         } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так'})
