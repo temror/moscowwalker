@@ -6,12 +6,11 @@ import {VisitList} from "../components/VisitList";
 export const Visited = ({visited}) => {
     const [places, setPlaces] = useState([])
     const {request} = useHttp()
-    const {token} = useContext(AuthContext)
+    const {token,userId} = useContext(AuthContext)
 
     const getPlaces = useCallback(async visited => {
         try {
-            console.log(visited)
-            const place = await request(`api/places/visited/${visited}`, 'GET', null, {
+            const place = await request(`api/places/visited/${visited}/${userId}`, 'GET', null, {
                 Authorization: `Bearer ${token}`
             })
             console.log(place)

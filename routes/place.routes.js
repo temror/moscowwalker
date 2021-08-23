@@ -11,20 +11,22 @@ router.post(
     async (req, res) => {
         try {
             const places = await Place.find()
-           /* const filterPlaces = await Place.find({owners: {$exists: false}})
-            places.forEach(e => {
-                let counter = 0
-                e.owners.forEach(f => {
-                    if (f.id.toString() === req.body.id.toString()) {
-                        counter++
-                    }
-                })
-                if(counter===0){
-                    filterPlaces.push(e)
-                }
-            })*/
-            //const place = filterPlaces[Math.floor(Math.random() * places.length)]
-            const place = places[Math.floor(Math.random() * places.length)]
+            const filterPlaces = await Place.find({owners: {$exists: false}})
+            console.log(filterPlaces)
+              places.forEach(e => {
+                 let counter = 0
+                 e.owners.forEach(f => {
+                     if (f.id.toString() === req.body.id.toString()) {
+                         counter++
+                     }
+                 })
+                 if(counter===0){
+                     filterPlaces.push(e)
+                 }
+             })
+            const place = filterPlaces[Math.floor(Math.random() * places.length)]
+            //const place = places[Math.floor(Math.random() * places.length)]
+
             res.json(place)
         } catch (e) {
             //ошибка
@@ -37,7 +39,7 @@ router.post(
     async (req, res) => {
         try {
             const {placeId, userId, visit} = req.body
-            const visitedPlace = await Place.updateOne({_id:placeId},{$push: {owners:{id:userId,visited:visit}}})
+            const visitedPlace = await Place.updateOne({_id: placeId}, {$push: {owners: {id: userId, visited: visit}}})
             console.log(visitedPlace)
             res.status(201).json({visitedPlace})
         } catch (e) {
@@ -63,22 +65,22 @@ router.post(
             res.status(500).json({message: 'Что-то пошло не так'})
         }
     })
-router.get('/visited/:visited', auth, async (req, res) => {
+router.get('/visited/:visited/:userId', auth, async (req, res) => {
         try {
             let visit = true
-            if(req.params.visited!=="true"){
+            if (req.params.visited !== "true") {
                 visit = false
             }
             const places = await Place.find()
             const visitedPlaces = []
-            places.forEach(p=>{
-                p.owners.forEach(o=>{
-                    if(o.visited===visit){
+            places.forEach(p => {
+                p.owners.forEach(o => {
+                    if (o.id.toString() === req.params.userId.toString() &&
+                        o.visited === visit) {
                         visitedPlaces.push(p)
                     }
                 })
             })
-            console.log(visitedPlaces)
             res.status(201).json({visitedPlaces})
         } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так'})
