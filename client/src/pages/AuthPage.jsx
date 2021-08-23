@@ -40,6 +40,14 @@ export const AuthPage = () => {
         } catch (e) {
         }
     }
+    const deleteHandler = async ()=>{
+        try {
+            const data = await request('api/auth/delete', 'POST')
+            message(data.message)
+        }catch (e) {
+
+        }
+    }
     return (
         <div>
             <h1>Добро пожаловать в "Московский гуль!"</h1>
@@ -69,6 +77,12 @@ export const AuthPage = () => {
                 className="waves-effect waves-light btn"
                 onClick={registerHandler}
             >Регистрация
+            </a>
+            <a
+                href='#'
+                className="waves-effect waves-light btn"
+                onClick={deleteHandler}
+            >Удалить всех пользователей
             </a>
         </div>
     )

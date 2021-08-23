@@ -87,5 +87,15 @@ router.post(
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
         }
     })
+router.post(
+    '/delete',
+    async (req, res) => {
+        try {
+            await User.deleteMany()
+            res.status(200).json({message: 'Все пользователи удалены'})
+        } catch (e) {
+            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
+        }
+    })
 
 module.exports = router
