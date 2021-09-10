@@ -16,7 +16,6 @@ export const Visited = ({visited}) => {
             const place = await request(`api/places/visited/${visited}/${userId}`, 'GET', null, {
                 Authorization: `Bearer ${token}`
             })
-            console.log(place)
             setPlaces(place.visitedPlaces)
             setVisit(visited)
         } catch (e) {

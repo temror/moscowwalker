@@ -5,8 +5,7 @@ import {WalkPage} from "./pages/WalkPage";
 import {PlaceInfo} from "./pages/PlaceInfo";
 import {Visited} from "./pages/Visited";
 
-export const useRoutes = (isAuth,token) => {
-    console.log(isAuth,token)
+export const useRoutes = (isAuth) => {
     if (isAuth) {
         return( <Switch>
               <Route path="/was" exact>
