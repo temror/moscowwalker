@@ -22,8 +22,12 @@ export const Navbar = () =>{
                     <li><NavLink to='/was'>Я здесь был</NavLink></li>
                     <li><NavLink to='/want'>Хочу побывать</NavLink></li>
                     <li
+                        className="hide-on-small-only"
                     style={{backgroundColor:"darkred"}}
                     ><a href="/" onClick={logoutHandler}>Выйти</a></li>
+                    <li className="hide-on-med-and-up"
+                        style={{backgroundColor:"darkred"}}><NavLink
+                        to='/walk'>Гулять!</NavLink></li>
                 </ul>
             </div>
         </nav>

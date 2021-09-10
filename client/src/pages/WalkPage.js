@@ -79,7 +79,7 @@ export const WalkPage = () => {
     return (
         <>
             <div
-            style={{height: 200}}
+            style={{height: 100}}
             className="hide-on-large-only"
             > </div>
             <div className="row"
