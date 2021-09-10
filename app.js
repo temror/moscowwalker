@@ -17,7 +17,8 @@ async function start() {
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                useCreateIndex: true
+                useCreateIndex: true,
+                useFindAndModify: false
             }
         )
         app.listen(PORT,() => console.log(`Приложение запущено на порту ${PORT}...`) )

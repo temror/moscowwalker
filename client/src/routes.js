@@ -4,7 +4,6 @@ import {AuthPage} from "./pages/AuthPage";
 import {WalkPage} from "./pages/WalkPage";
 import {PlaceInfo} from "./pages/PlaceInfo";
 import {Visited} from "./pages/Visited";
-import {NotVisited} from "./pages/NotVisited";
 
 export const useRoutes = (isAuth,token) => {
     console.log(isAuth,token)

@@ -6,6 +6,7 @@ import {AuthContext} from "./context/AuthContext";
 import {useAuth} from "./hooks/auth.hook";
 import {Preloader} from "./components/Preloader";
 import {Navbar} from "./components/Navbar";
+import {FloatingButton} from "./components/FloatingButton";
 
 function App() {
     const {token, login, logout, userId, ready} = useAuth()
@@ -21,7 +22,7 @@ function App() {
        <AuthContext.Provider
            value={{token, login, logout, userId,isAuth}}>
            <Router>
-               {isAuth && <Navbar/>}
+               {isAuth && <><Navbar/><FloatingButton/></>}
                <div className='container'>
                    <Switch>
                        {routes}

@@ -16,7 +16,6 @@ router.post(
     ],
     async (req, res) => {
         try {
-            console.log('Body: ', req.body);
             const errors = validationResult(req)
 
             if (!errors.isEmpty()) {
@@ -83,16 +82,6 @@ router.post(
                 {expiresIn: '1h'}
             )
             res.json({token, userId: user.id})
-        } catch (e) {
-            res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
-        }
-    })
-router.post(
-    '/delete',
-    async (req, res) => {
-        try {
-            await User.deleteMany()
-            res.status(200).json({message: 'Все пользователи удалены'})
         } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
         }

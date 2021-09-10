@@ -1,7 +1,5 @@
 import {useState, useCallback, useEffect} from "react";
 
-//Сохранение логина и пароля в localStorage
-
 const storageName = 'userData'
 
 export const useAuth = () => {

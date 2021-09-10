@@ -1,6 +1,7 @@
 import React, {useContext} from "react";
 import {NavLink, useHistory} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
+import 'materialize-css'
 
 export const Navbar = () =>{
     const history = useHistory()
@@ -12,15 +13,20 @@ export const Navbar = () =>{
         history.push('/')
     }
     return(
+        <>
         <nav>
-            <div className="nav-wrapper blue darken-1">
-                <ul id="nav-mobile" className="left">
-                    <li><NavLink to='/walk'>Сделать гуль</NavLink></li>
+            <div className="nav-wrapper black darken-1">
+                <ul id="nav-mobile" className="right">
+                    <li className="hide-on-small-only"><NavLink
+                        to='/walk'>Сделать гуль</NavLink></li>
                     <li><NavLink to='/was'>Я здесь был</NavLink></li>
                     <li><NavLink to='/want'>Хочу побывать</NavLink></li>
-                    <li><a href="/" onClick={logoutHandler}>Выйти</a></li>
+                    <li
+                    style={{backgroundColor:"darkred"}}
+                    ><a href="/" onClick={logoutHandler}>Выйти</a></li>
                 </ul>
             </div>
         </nav>
+            </>
     )
 }
